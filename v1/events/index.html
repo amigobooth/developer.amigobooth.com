@@ -34,8 +34,13 @@
 <ul id="markdown-toc">
 <li><a href="#list-your-events">List your events</a></li>
   <li><a href="#list-user-events">List user events</a></li>
+  <li><a href="#list-all-events">List all events</a></li>
+  <li><a href="#list-nearby-events">List nearby events</a></li>
   <li><a href="#get-a-single-event">Get a single event</a></li>
+  <li><a href="#create-an-event">Create an event</a></li>
 </ul><h2 id="list-your-events">List your events</h2>
+
+<p>List events owned by the authenticated user.</p>
 
 <pre><code>GET /me/events
 </code></pre>
@@ -52,10 +57,44 @@
 </dd>
 </dl><h2 id="list-user-events">List user events</h2>
 
+<p>List events owned by the specified user.</p>
+
 <pre><code>GET /user/:user/events
 </code></pre>
 
 <h3 id="parameters-1">Parameters</h3>
+
+<dl>
+<dt>sort</dt>
+  <dd>
+<code>created</code>, <code>updated</code>, <code>name</code>, <code>date</code>, default: <code>date</code>.</dd>
+  <dt>direction</dt>
+  <dd>
+<code>asc</code> or <code>desc</code>, default: <code>desc</code>
+</dd>
+</dl><h2 id="list-all-events">List all events</h2>
+
+<p>List all events across all users.</p>
+
+<pre><code>GET /events
+</code></pre>
+
+<h3 id="parameters-2">Parameters</h3>
+
+<dl>
+<dt>sort</dt>
+  <dd>
+<code>created</code>, <code>updated</code>, <code>name</code>, <code>date</code>, default: <code>date</code>.</dd>
+  <dt>direction</dt>
+  <dd>
+<code>asc</code> or <code>desc</code>, default: <code>desc</code>
+</dd>
+</dl><h2 id="list-nearby-events">List nearby events</h2>
+
+<pre><code>GET /events/:latitude/:longitude
+</code></pre>
+
+<h3 id="parameters-3">Parameters</h3>
 
 <dl>
 <dt>sort</dt>
@@ -77,7 +116,7 @@ X-RateLimit-Remaining: 4999</code></pre>
   <span class="p">{</span>
     <span class="s2">"id"</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"Office Party"</span><span class="p">,</span>
-    <span class="s2">"date"</span><span class="o">:</span> <span class="s2">"2012-10-28"</span><span class="p">,</span>
+    <span class="s2">"date"</span><span class="o">:</span> <span class="s2">"2012-12-09"</span><span class="p">,</span>
     <span class="s2">"api_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/users/dwight/events/1"</span><span class="p">,</span>
     <span class="s2">"html_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/dwight/1-office-party"</span><span class="p">,</span>
     <span class="s2">"created_at"</span><span class="o">:</span> <span class="s2">"2012-12-09T17:58:26Z"</span><span class="p">,</span>
@@ -113,7 +152,7 @@ X-RateLimit-Remaining: 4999</code></pre>
 <pre class="highlight"><code class="language-javascript"><span class="p">{</span>
   <span class="s2">"id"</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"Office Party"</span><span class="p">,</span>
-  <span class="s2">"date"</span><span class="o">:</span> <span class="s2">"2012-10-28"</span><span class="p">,</span>
+  <span class="s2">"date"</span><span class="o">:</span> <span class="s2">"2012-12-09"</span><span class="p">,</span>
   <span class="s2">"api_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/users/dwight/events/1"</span><span class="p">,</span>
   <span class="s2">"html_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/dwight/1-office-party"</span><span class="p">,</span>
   <span class="s2">"created_at"</span><span class="o">:</span> <span class="s2">"2012-12-09T17:58:26Z"</span><span class="p">,</span>
@@ -132,6 +171,62 @@ X-RateLimit-Remaining: 4999</code></pre>
     <span class="mf">32.7993</span><span class="p">,</span>
     <span class="o">-</span><span class="mf">117.16</span>
   <span class="p">]</span>
+<span class="p">}</span></code></pre>
+
+<h2 id="create-an-event">Create an event</h2>
+
+<p>Create a new event for the authenticated user.</p>
+
+<pre><code>POST /me/events
+</code></pre>
+
+<h3 id="input">Input</h3>
+
+<dl>
+<dt>name</dt>
+  <dd>
+<em>Required</em> <strong>string</strong>
+</dd>
+  <dt>date</dt>
+  <dd>
+<em>Required</em> <strong>string</strong>
+</dd>
+</dl><pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+  <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"Office Party"</span><span class="p">,</span>
+  <span class="s2">"date"</span><span class="o">:</span> <span class="s2">"2012-12-09"</span>
+<span class="p">}</span></code></pre>
+
+<h3 id="response-2">Response</h3>
+
+<pre class="headers"><code>Status: 200 OK
+X-RateLimit-Limit: 5000
+X-RateLimit-Remaining: 4999</code></pre>
+
+<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+  <span class="s2">"id"</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"Office Party"</span><span class="p">,</span>
+  <span class="s2">"date"</span><span class="o">:</span> <span class="s2">"2012-12-09"</span><span class="p">,</span>
+  <span class="s2">"api_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/users/dwight/events/1"</span><span class="p">,</span>
+  <span class="s2">"html_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/dwight/1-office-party"</span><span class="p">,</span>
+  <span class="s2">"created_at"</span><span class="o">:</span> <span class="s2">"2012-12-09T17:58:26Z"</span><span class="p">,</span>
+  <span class="s2">"shots_count"</span><span class="o">:</span> <span class="mi">142</span><span class="p">,</span>
+  <span class="s2">"private"</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">"owner"</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"login"</span><span class="o">:</span> <span class="s2">"dwight"</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"Dwight Schrute"</span><span class="p">,</span>
+    <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"dwight@amigobooth.com"</span><span class="p">,</span>
+    <span class="s2">"api_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/api/v1/users/dwight"</span><span class="p">,</span>
+    <span class="s2">"html_url"</span><span class="o">:</span> <span class="s2">"https://amigobooth.com/dwight"</span><span class="p">,</span>
+    <span class="s2">"created_at"</span><span class="o">:</span> <span class="s2">"2012-12-09T17:58:26Z"</span>
+  <span class="p">},</span>
+  <span class="s2">"coordinates"</span><span class="o">:</span> <span class="p">[</span>
+    <span class="mf">32.7993</span><span class="p">,</span>
+    <span class="o">-</span><span class="mf">117.16</span>
+  <span class="p">],</span>
+  <span class="s2">"password"</span><span class="o">:</span> <span class="s2">"dundermiflin"</span><span class="p">,</span>
+  <span class="s2">"editing_preset"</span><span class="o">:</span> <span class="s2">"none"</span><span class="p">,</span>
+  <span class="s2">"facebook_album_id"</span><span class="o">:</span> <span class="s2">"903973659337539"</span>
 <span class="p">}</span></code></pre>
     </div>
 
