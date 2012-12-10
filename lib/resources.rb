@@ -82,8 +82,9 @@ module AmigoBooth
     CREATED_AT = "2012-12-09T17:58:26Z"
 
     KEY = {
-      "token"      => "Mk3W4dTvpdUNar7AB3RD4PBoT8Py9wFNZ7WakvQP",
-      "created_at" => CREATED_AT
+      "description" => "Dwight's iPhone 5",
+      "token"       => "Mk3W4dTvpdUNar7AB3RD4PBoT8Py9wFNZ7WakvQP",
+      "created_at"  => CREATED_AT
     }
 
     USER = {

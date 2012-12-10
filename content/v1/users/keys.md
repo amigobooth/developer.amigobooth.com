@@ -12,14 +12,26 @@ authenticated.
 
 ## Create a new key
 
+To create a new key, you must authenticate with HTTP Basic Authentication
+using your account email address and password.
+
     POST /me/keys
+
+### Input
+
+description
+: _Optional_ **string**
+
+<%= json \
+    :description => "Dwight's iPhone 5"
+%>
 
 ### Response
 
 <%= headers 200 %>
-<%= json(:key) { |h| [h] } %>
+<%= json(:key) %>
 
-## Delete a public key
+## Revoke a key's access
 
     DELETE /me/keys/:token
 
