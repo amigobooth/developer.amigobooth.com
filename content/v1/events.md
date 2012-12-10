@@ -95,8 +95,8 @@ password
 coordinates
 : _Optional_ **array** - must contain valid latitude and longitude as floats
 
-editing_preset - permitted values are `none`, `film`, or `film_bw`. Default is `none`.
-: _Optional_ **string**
+editing_preset
+: _Optional_ **string** - permitted values are `none`, `film`, or `film_bw`. Default is `none`.
 
 <%= json \
     :name     => "Office Party",
@@ -109,3 +109,49 @@ editing_preset - permitted values are `none`, `film`, or `film_bw`. Default is `
 
 <%= headers 201, :Location => "https://amigobooth.com/api/v1/users/dwight/events/1" %>
 <%= json :event_authenticated %>
+
+## Update an event
+
+Update the provided event.
+
+    PATCH /me/events/:event_id
+
+### Input
+
+name
+: _Required_ **string**
+
+date
+: _Required_ **string**
+
+password
+: _Optional_ **string**
+
+coordinates
+: _Optional_ **array** - must contain valid latitude and longitude as floats
+
+editing_preset
+: _Optional_ **string** - permitted values are `none`, `film`, or `film_bw`. Default is `none`.
+
+<%= json \
+    :name     => "Office Party",
+    :date     => "2012-12-09",
+    :password => "dundermiflin",
+    :coordinates => [32.7993,-117.16]
+%>
+
+### Response
+
+<%= headers 200 %>
+<%= json :event_authenticated %>
+
+## Delete an event
+
+Delete the provided event. This permanently deletes this event along with all
+associated shots.
+
+    DELETE /me/events/:event_id
+
+### Response
+
+<%= headers 204 %>
