@@ -89,12 +89,23 @@ name
 date
 : _Required_ **string**
 
+password
+: _Optional_ **string**
+
+coordinates
+: _Optional_ **array** - must contain valid latitude and longitude as floats
+
+editing_preset - permitted values are `none`, `film`, or `film_bw`. Default is `none`.
+: _Optional_ **string**
+
 <%= json \
     :name     => "Office Party",
-    :date     => "2012-12-09"
+    :date     => "2012-12-09",
+    :password => "dundermiflin",
+    :coordinates => [32.7993,-117.16]
 %>
 
 ### Response
 
-<%= headers 200 %>
+<%= headers 201, :Location => "https://amigobooth.com/api/v1/users/dwight/events/1" %>
 <%= json :event_authenticated %>
