@@ -110,7 +110,7 @@ module AmigoBooth
     EVENT = {
       "id"           => 1,
       "name"         => "Office Party",
-      "date"         => "2012-10-28",
+      "date"         => "2012-12-09",
       "api_url"      => "https://amigobooth.com/api/v1/users/dwight/events/1",
       "html_url"     => "https://amigobooth.com/api/v1/dwight/1-office-party",
       "created_at"   => CREATED_AT,
