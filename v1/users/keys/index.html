@@ -33,14 +33,28 @@
 
 <ul id="markdown-toc">
 <li><a href="#create-a-new-key">Create a new key</a></li>
-  <li><a href="#delete-a-public-key">Delete a public key</a></li>
+  <li><a href="#revoke-a-keys-access">Revoke a key’s access</a></li>
 </ul><p>Management of authentication keys via the API requires that you are
 authenticated.</p>
 
 <h2 id="create-a-new-key">Create a new key</h2>
 
+<p>To create a new key, you must authenticate with HTTP Basic Authentication
+using your account email address and password.</p>
+
 <pre><code>POST /me/keys
 </code></pre>
+
+<h3 id="input">Input</h3>
+
+<dl>
+<dt>description</dt>
+  <dd>
+<em>Optional</em> <strong>string</strong>
+</dd>
+</dl><pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+  <span class="s2">"description"</span><span class="o">:</span> <span class="s2">"Dwight's iPhone 5"</span>
+<span class="p">}</span></code></pre>
 
 <h3 id="response">Response</h3>
 
@@ -48,14 +62,13 @@ authenticated.</p>
 X-RateLimit-Limit: 5000
 X-RateLimit-Remaining: 4999</code></pre>
 
-<pre class="highlight"><code class="language-javascript"><span class="p">[</span>
-  <span class="p">{</span>
-    <span class="s2">"token"</span><span class="o">:</span> <span class="s2">"Mk3W4dTvpdUNar7AB3RD4PBoT8Py9wFNZ7WakvQP"</span><span class="p">,</span>
-    <span class="s2">"created_at"</span><span class="o">:</span> <span class="s2">"2012-12-09T17:58:26Z"</span>
-  <span class="p">}</span>
-<span class="p">]</span></code></pre>
+<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+  <span class="s2">"description"</span><span class="o">:</span> <span class="s2">"Dwight's iPhone 5"</span><span class="p">,</span>
+  <span class="s2">"token"</span><span class="o">:</span> <span class="s2">"Mk3W4dTvpdUNar7AB3RD4PBoT8Py9wFNZ7WakvQP"</span><span class="p">,</span>
+  <span class="s2">"created_at"</span><span class="o">:</span> <span class="s2">"2012-12-09T17:58:26Z"</span>
+<span class="p">}</span></code></pre>
 
-<h2 id="delete-a-public-key">Delete a public key</h2>
+<h2 id="revoke-a-keys-access">Revoke a key’s access</h2>
 
 <pre><code>DELETE /me/keys/:token
 </code></pre>
