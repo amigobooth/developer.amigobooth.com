@@ -1,5 +1,5 @@
 ---
-title: Users | GitHub API
+title: Users | AmigoBooth API
 ---
 
 # Users API
@@ -43,50 +43,11 @@ name
 email
 : _Optional_ **string** - Publicly visible email address.
 
-blog
-: _Optional_ **string**
-
-company
-: _Optional_ **string**
-
-location
-: _Optional_ **string**
-
-hireable
-: _Optional_ **boolean**
-
-bio
-: _Optional_ **string**
-
 <%= json \
-    :name     => "monalisa octocat",
-    :email    => "octocat@github.com",
-    :blog     => "https://github.com/blog",
-    :company  => "GitHub",
-    :location => "San Francisco",
-    :hireable => true,
-    :bio      => "There once..."
+    :name     => "Dwight Schrute"
 %>
 
 ### Response
 
 <%= headers 200 %>
 <%= json :user_authenticated %>
-
-## Get all users
-
-This provides a dump of every user, in the order that they signed up for
-GitHub.
-
-    GET /users
-
-### Parameters
-
-since
-: The integer ID of the last User that you've seen.
-
-### Response
-
-<%= headers 200 %>
-<%= json(:user) { |h| [h] } %>
-

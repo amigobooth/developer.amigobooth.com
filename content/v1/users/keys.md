@@ -1,5 +1,5 @@
 ---
-title: User Authentication Keys | GitHub API
+title: User Authentication Keys | AmigoBooth API
 ---
 
 # User Authentication Keys API
@@ -7,7 +7,7 @@ title: User Authentication Keys | GitHub API
 * TOC
 {:toc}
 
-Management of public keys via the API requires that you are
+Management of authentication keys via the API requires that you are
 authenticated.
 
 ## Create a new key
