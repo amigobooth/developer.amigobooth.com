@@ -46,8 +46,6 @@ you have any problems or requests please contact
   <li><a href="#rate-limiting">Rate Limiting</a></li>
   <li><a href="#user-agent-required">User Agent Required</a></li>
   <li><a href="#conditional-requests">Conditional requests</a></li>
-  <li><a href="#cross-origin-resource-sharing">Cross Origin Resource Sharing</a></li>
-  <li><a href="#json-p-callbacks">JSON-P Callbacks</a></li>
 </ul><h2 id="schema">Schema</h2>
 
 <p>All API access is over HTTPS, and accessed from the <code>amigobooth.com/api/v1</code>
@@ -212,34 +210,25 @@ to receive a token using a POST request to the keys endpoint.</p>
 $ curl -u "username" https://amigobooth.com/api/v1/me/keys
 </pre>
 
-<h3 id="oauth2-token-sent-in-a-header">OAuth2 Token (sent in a header)</h3>
+<h3 id="token-sent-in-a-header">Token (sent in a header)</h3>
 
 <pre class="terminal">
-$ curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com
+$ curl -H "X-AmigoBooth-Token: TOKEN" https://amigobooth.com/api/v1/me
 </pre>
 
 <h2 id="pagination">Pagination</h2>
 
 <p>Requests that return multiple items will be paginated to 30 items by
 default.  You can specify further pages with the <code>?page</code> parameter. For some
-resources, you can also set a custom page size up to 100 with the <code>?per_page</code> parameter.
-Note that for technical reasons not all endpoints respect the <code>?per_page</code> parameter,
-see <a href="http://developer.github.com/v3/activity/events/">events</a> for example.</p>
+resources, you can also set a custom page size up to 200 with the <code>?per_page</code> parameter.</p>
 
 <pre class="terminal">
-$ curl https://api.github.com/user/repos?page=2&amp;per_page=100
+$ curl https://amigobooth.com/api/v1/me/events?page=2&amp;per_page=200
 </pre>
 
 <p>The pagination info is included in <a href="http://www.w3.org/Protocols/9707-link-header.html">the Link
 header</a>. It is important to
-follow these Link header values instead of constructing your own URLs. In some
-instances, such as in the <a href="/v3/repos/commits/">Commits
-API</a>, pagination is based on
-SHA1 and not on page number.</p>
-
-<pre><code>Link: &lt;https://api.github.com/user/repos?page=3&amp;per_page=100&gt;; rel="next",
-  &lt;https://api.github.com/user/repos?page=50&amp;per_page=100&gt;; rel="last"
-</code></pre>
+follow these Link header values instead of constructing your own URLs.</p>
 
 <p><em>Linebreak is included for readability.</em></p>
 
@@ -256,18 +245,17 @@ SHA1 and not on page number.</p>
   <dd>Shows the URL of the immediate previous page of results.</dd>
 </dl><h2 id="rate-limiting">Rate Limiting</h2>
 
-<p>We limit requests to 60 per hour for unauthenticated requests. For requests
-using Basic Authentication or OAuth, we limit requests to 5,000
-per hour.  You can check the returned HTTP headers of any API request to see
-your current status:</p>
+<p>We limit requests to 120 per hour for unauthenticated requests. For requests
+using Basic Authentication, we limit requests to 5,000 per hour.  You can check
+the returned HTTP headers of any API request to see your current status:</p>
 
 <pre class="terminal">
-$ curl -i https://api.github.com/users/whatever
+$ curl -i https://amigobooth.com/api/v1/me
 
 HTTP/1.1 200 OK
 Status: 200 OK
 X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4966
+X-RateLimit-Remaining: 4999
 </pre>
 
 <p>You can also check your rate limit status without incurring an API hit.</p>
@@ -290,27 +278,6 @@ X-RateLimit-Remaining: 4999</code></pre>
 
 <p><br></p>
 
-<h4 id="unauthenticated-rate-limited-requests">Unauthenticated rate limited requests</h4>
-
-<p>If you need to make unauthenticated calls but need to use a higher rate limit
-associated with your OAuth application, you can send over your client ID and
-secret in the query string.</p>
-
-<pre class="terminal">
-$ curl -i https://api.github.com/users/whatever?client_id=xxxxxxxxxxxxxx&amp;client_secret=yyyyyyyyyyyyyyyyyyyyy
-
-HTTP/1.1 200 OK
-Status: 200 OK
-X-RateLimit-Limit: 12500
-X-RateLimit-Remaining: 11966
-</pre>
-
-<p>This method should only be used for server-to-server calls. You should never
-share your client secret with anyone or include it in client-side browser code.</p>
-
-<p>Please <a href="https://github.com/contact">contact us</a> to request a higher rate limit
-for your OAuth application.</p>
-
 <h2 id="user-agent-required">User Agent Required</h2>
 
 <p>All API requests are encouraged to send a valid User Agent string.  This is
@@ -328,7 +295,7 @@ a conditional request and receiving a 304 response does not count against your
 <a href="#rate-limiting">Rate Limit</a>, so we encourage you to use it whenever possible.</p>
 
 <pre class="terminal">
-$ curl -i https://api.github.com/user
+$ curl -i https://amigobooth.com/api/v1/me
 HTTP/1.1 200 OK
 Cache-Control: private, max-age=60
 ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
@@ -338,7 +305,7 @@ Vary: Accept, Authorization, Cookie
 X-RateLimit-Limit: 5000
 X-RateLimit-Remaining: 4996
 
-$ curl -i https://api.github.com/user -H "If-Modified-Since: Thu, 05 Jul 2012 15:31:30 GMT"
+$ curl -i https://amigobooth.com/api/v1/me -H "If-Modified-Since: Thu, 05 Jul 2012 15:31:30 GMT"
 HTTP/1.1 304 Not Modified
 Cache-Control: private, max-age=60
 Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
@@ -347,7 +314,7 @@ Vary: Accept, Authorization, Cookie
 X-RateLimit-Limit: 5000
 X-RateLimit-Remaining: 4996
 
-$ curl -i https://api.github.com/user -H 'If-None-Match: "644b5b0155e6404a9cc4bd9d8b1ae730"'
+$ curl -i https://amigobooth.com/api/v1/me -H 'If-None-Match: "644b5b0155e6404a9cc4bd9d8b1ae730"'
 HTTP/1.1 304 Not Modified
 Cache-Control: private, max-age=60
 ETag: "644b5b0155e6404a9cc4bd9d8b1ae730"
@@ -357,106 +324,6 @@ Vary: Accept, Authorization, Cookie
 X-RateLimit-Limit: 5000
 X-RateLimit-Remaining: 4996
 </pre>
-
-<h2 id="cross-origin-resource-sharing">Cross Origin Resource Sharing</h2>
-
-<p>The API supports Cross Origin Resource Sharing (CORS) for AJAX requests.
-you can read the <a href="http://www.w3.org/TR/cors">CORS W3C working draft</a>, or
-<a href="http://code.google.com/p/html5security/wiki/CrossOriginRequestSecurity">this intro</a> from the
-HTML 5 Security Guide.</p>
-
-<p>Here’s a sample request sent from a browser hitting
-<code>http://some-site.com</code>:</p>
-
-<pre><code>$ curl -i https://api.github.com -H "Origin: http://some-site.com"
-HTTP/1.1 302 Found
-</code></pre>
-
-<p>Any domain that is registered as an OAuth Application is accepted.
-Here’s a sample request for a browser hitting <a href="http://calendaraboutnothing.com/">Calendar About Nothing</a>:</p>
-
-<pre><code>$ curl -i https://api.github.com -H "Origin: http://calendaraboutnothing.com"
-HTTP/1.1 302 Found
-Access-Control-Allow-Origin: http://calendaraboutnothing.com
-Access-Control-Expose-Headers: Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
-Access-Control-Allow-Credentials: true
-</code></pre>
-
-<p>This is what the CORS preflight request looks like:</p>
-
-<pre><code>$ curl -i https://api.github.com -H "Origin: http://calendaraboutnothing.com" -X OPTIONS
-HTTP/1.1 204 No Content
-Access-Control-Allow-Origin: http://calendaraboutnothing.com
-Access-Control-Allow-Headers: Authorization, X-Requested-With
-Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE
-Access-Control-Expose-Headers: Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-OAuth-Scopes, X-Accepted-OAuth-Scopes
-Access-Control-Max-Age: 86400
-Access-Control-Allow-Credentials: true
-</code></pre>
-
-<h2 id="json-p-callbacks">JSON-P Callbacks</h2>
-
-<p>You can send a <code>?callback</code> parameter to any GET call to have the results
-wrapped in a JSON function.  This is typically used when browsers want
-to embed GitHub content in web pages by getting around cross domain
-issues.  The response includes the same data output as the regular API,
-plus the relevant HTTP Header information.</p>
-
-<pre class="terminal">
-$ curl https://api.github.com?callback=foo
-
-foo({
-  "meta": {
-    "status": 200,
-    "X-RateLimit-Limit": "5000",
-    "X-RateLimit-Remaining": "4966",
-    "Link": [ // pagination headers and other links
-      ["https://api.github.com?page=2", {"rel": "next"}]
-    ]
-  },
-  "data": {
-    // the data
-  }
-})
-</pre>
-
-<p>You can write a javascript handler to process the callback like this:</p>
-
-<pre class="highlight"><code class="language-javascript"><span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">meta</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">meta</span>
-  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">meta</span><span class="p">)</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
-<span class="p">}</span></code></pre>
-
-<p>All of the headers are the same String value as the HTTP Headers with one
-notable exception: Link.  Link headers are pre-parsed for you and come
-through as an array of <code>[url, options]</code> tuples.</p>
-
-<p>A link that looks like this:</p>
-
-<pre><code>Link: &lt;url1&gt;; rel="next", &lt;url2&gt;; rel="foo"; bar="baz"
-</code></pre>
-
-<p>… will look like this in the Callback output:</p>
-
-<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
-  <span class="s2">"Link"</span><span class="o">:</span> <span class="p">[</span>
-    <span class="p">[</span>
-      <span class="s2">"url1"</span><span class="p">,</span>
-      <span class="p">{</span>
-        <span class="s2">"rel"</span><span class="o">:</span> <span class="s2">"next"</span>
-      <span class="p">}</span>
-    <span class="p">],</span>
-    <span class="p">[</span>
-      <span class="s2">"url2"</span><span class="p">,</span>
-      <span class="p">{</span>
-        <span class="s2">"rel"</span><span class="o">:</span> <span class="s2">"foo"</span><span class="p">,</span>
-        <span class="s2">"bar"</span><span class="o">:</span> <span class="s2">"baz"</span>
-      <span class="p">}</span>
-    <span class="p">]</span>
-  <span class="p">]</span>
-<span class="p">}</span></code></pre>
     </div>
 
   <div id="js-sidebar" class="sidebar-shell">
