@@ -174,7 +174,7 @@ names).</dd>
 
 <h2 id="http-verbs">HTTP Verbs</h2>
 
-<p>Where possible, API v3 strives to use appropriate HTTP verbs for each
+<p>Where possible, API v1 strives to use appropriate HTTP verbs for each
 action.</p>
 
 <dl>
@@ -197,17 +197,16 @@ accept one or more of the attributes to update the resource.</dd>
 in some places.  This is to prevent the accidental leakage of private
 information to unauthorized users.</p>
 
-<h3 id="basic-authentication">Basic Authentication</h3>
-
 <p>General API usage uses keys (tokens) for authentication. A single account can have
 any number of keys, allowing users to invalidate a token used on a particular
 device. All user keys are immediately revoked when a user changes their password.</p>
 
 <p>Initial API requests authenticate with the email address and password for the account
-to receive a token using a POST request to the keys endpoint.</p>
+to receive a token using a POST request to the keys endpoint. See the <a href="/v1/users/keys/">User Keys</a>
+documentation for details.</p>
 
 <pre class="terminal">
-$ curl -u "username" https://amigobooth.com/api/v1/me/keys
+$ curl -u "dwight@amigobooth.com" https://amigobooth.com/api/v1/me/keys
 </pre>
 
 <h3 id="token-sent-in-a-header">Token (sent in a header)</h3>
@@ -258,26 +257,6 @@ X-RateLimit-Limit: 5000
 X-RateLimit-Remaining: 4999
 </pre>
 
-<p>You can also check your rate limit status without incurring an API hit.</p>
-
-<pre><code>GET /rate_limit
-</code></pre>
-
-<h3 id="rate-limit">Rate limit</h3>
-
-<pre class="headers"><code>Status: 200 OK
-X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4999</code></pre>
-
-<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
-  <span class="s2">"rate"</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s2">"remaining"</span><span class="o">:</span> <span class="mi">4999</span><span class="p">,</span>
-    <span class="s2">"limit"</span><span class="o">:</span> <span class="mi">5000</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
-
-<p><br></p>
-
 <h2 id="user-agent-required">User Agent Required</h2>
 
 <p>All API requests are encouraged to send a valid User Agent string.  This is
@@ -303,7 +282,7 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 Status: 200 OK
 Vary: Accept, Authorization, Cookie
 X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4996
+X-RateLimit-Remaining: 4999
 
 $ curl -i https://amigobooth.com/api/v1/me -H "If-Modified-Since: Thu, 05 Jul 2012 15:31:30 GMT"
 HTTP/1.1 304 Not Modified
@@ -312,7 +291,7 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 Status: 304 Not Modified
 Vary: Accept, Authorization, Cookie
 X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4996
+X-RateLimit-Remaining: 4999
 
 $ curl -i https://amigobooth.com/api/v1/me -H 'If-None-Match: "644b5b0155e6404a9cc4bd9d8b1ae730"'
 HTTP/1.1 304 Not Modified
@@ -322,7 +301,7 @@ Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT
 Status: 304 Not Modified
 Vary: Accept, Authorization, Cookie
 X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4996
+X-RateLimit-Remaining: 4999
 </pre>
     </div>
 
